@@ -16,6 +16,10 @@ var simulate = false;
 var threshold = 500;
 var addition = 500;
 
+var defaultCash;
+var changeDefault = false;
+var defaultValue = 1000;
+
 
 if (replenish) enableAutoCashReplenish();
 
@@ -37,7 +41,7 @@ function main() {
                 "classification": win_class.main,
                 "title": NAME,
                 "width": 240,
-                "height": 180,
+                "height": 300,
                 "widgets": [
                     // 0 main switch for plugin
                     {
@@ -79,7 +83,7 @@ function main() {
                     {
                         "type": "groupbox",
                         "width": 234,
-                        "height": 140,
+                        "height": 130,
                         "x": 3,
                         "y": 35,
                         "text": "Auto Cash Replenish"
@@ -233,16 +237,25 @@ function main() {
                             }
                         }
                     },
+                    // 9 Groupbox
+                    {
+                        "type": "groupbox",
+                        "width": 234,
+                        "height": 125,
+                        "x": 3,
+                        "y": 170,
+                        "text": "Default Guest Wealth"
+                    }
                     // Debug Options Window
+                    /*
                     {
                         "type": "button",
                         "width": 210,
                         "height": 15,
                         "x": 10,
-                        "y": 165,
+                        "y": 170,
                         "text": "Debug Options",
                         "onClick": function () {
-                            /**@type {WindowDesc} */
                             const win_debug_desc = {
                                 "classification": win_class.debug,
                                 "title": win_class.debug,
@@ -253,7 +266,7 @@ function main() {
                             if (!ui.getWindow(win_class.debug)) ui.openWindow(win_debug_desc);
                             else ui.getWindow(win_class.debug).bringToFront();
                         }
-                    }
+                    }*/
                 ]
             };
             if (!ui.getWindow(win_class.main)) var win = ui.openWindow(win_desc);
@@ -262,18 +275,6 @@ function main() {
     }
 
     // regAutoCash();
-}
-
-/**
- * 
- * @param {Window} win 
- * @param {WindowDesc} win_desc
- */
-function refreshWindow (win, win_desc) {
-    win.close();
-    setTimeout(function () {
-        ui.openWindow(win_desc);
-    }, 1000);
 }
 
 function enableAutoCashReplenish () {
@@ -310,6 +311,21 @@ function addCash() {
     }
 }
 
+function enableDefaultCash () {
+    if (!defaultCash) defaultCash = context.subscribe("guest.generation", function (args) {
+        const id = args.id;
+        /**@type {Guest} */
+        const guest = map.getEntity(id);
+        guest.cash = defaultValue;
+    });
+}
+
+function disableDefaultCash () {
+    if (defaultCash) {
+        defaultCash.dispose();
+        defaultCash = undefined;
+    }
+}
 
 
 
