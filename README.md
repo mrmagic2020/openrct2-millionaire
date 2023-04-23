@@ -27,3 +27,5 @@ A. Open `milionaire.js`  with a text editor and you will see a block of code wit
 ---
 
 Special thanks to [OpenRCT2](https://openrct2.org) and the OpenRCT2 Community!
+
+This is my first OpenRCT2 plugin, and it almost certainly has BUGS. Please feel free to submit issues/suggestions on GitHub and I will try my best to improve!
