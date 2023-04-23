@@ -6,19 +6,19 @@ const win_class = {
     debug: "Debug Options"
 }
 
-// Configuration
-var enabled = true;
+/*---------------Configuration Panel---------------*/
+var enabled = true; // Main switch [true=on false=off]
 
-var autoCash;
-var replenish = true;
-var notify = false;
-var simulate = false;
-var threshold = 500;
-var addition = 500;
+var autoCash; // DO NOT EDIT
+var replenish = true; // Auto cash replenish switch
+var notify = false; // Nofinication switch
+var simulate = false; // Simulate cash machine switch
+var threshold = 500; // Cash addition threshold [500=$50]
+var addition = 500; // Amount of cash to be given each time
 
-var defaultCash;
-var changeDefault = false;
-var defaultValue = 1000;
+var defaultCash; // DO NOT EDIT
+var changeDefault = false; // Default wealth switch
+var defaultValue = 1000; // Default guest wealth
 
 
 if (replenish) enableAutoCashReplenish();
@@ -66,6 +66,7 @@ function main() {
                                 );
                                 win.title = NAME + " - Enabled";
                                 win.findWidget("replenish.switch").isDisabled = false;
+                                win.findWidget("defaultcash.switch").isDisabled = false;
                             } else {
                                 park.postMessage(
                                     {
@@ -74,8 +75,10 @@ function main() {
                                     }
                                 );
                                 disableAutoCashReplenish();
+                                disableDefaultCash();
                                 win.title = NAME + " - Disabled";
                                 win.findWidget("replenish.switch").isDisabled = true;
+                                win.findWidget("defaultcash.switch").isDisabled = true;
                             }
                         }
                     },
@@ -101,13 +104,9 @@ function main() {
                         "isChecked": replenish,
                         "isDisabled": !enabled,
                         "onChange": function (is) {
-                            if (enabled) {
-                                replenish = is;
-                                if (is) enableAutoCashReplenish();
-                                else disableAutoCashReplenish();
-                            } else {
-                                ui.showError("Error", "Main switch is off!");
-                            }
+                            replenish = is;
+                            if (is) enableAutoCashReplenish();
+                            else disableAutoCashReplenish();
                         }
                     },
                     // 3 Notification Switch
@@ -223,6 +222,7 @@ function main() {
                         "y": 150,
                         "text": "Simulate cash machine",
                         "tooltip": "If enabled, guest must has less than $9, happiness more than 105 and energy more than 70 to recieve an additional $50.",
+                        "isChecked": simulate,
                         "onChange": function (is) {
                             simulate = is;
                             win.findWidget("replenish.threshold.spinner").isDisabled = is;
@@ -245,6 +245,67 @@ function main() {
                         "x": 3,
                         "y": 170,
                         "text": "Default Guest Wealth"
+                    },
+                    // 10 Default cash switch
+                    {
+                        "name": "defaultcash.switch",
+                        "type": "checkbox",
+                        "width": 210,
+                        "height": 10,
+                        "x": 10,
+                        "y": 185,
+                        "text": "Enable",
+                        "tooltip": "Enable/Disable default cash adjustment.",
+                        "isChecked": changeDefault,
+                        "isDisabled": !enabled,
+                        "onChange": function (is) {
+                            changeDefault = is;
+                            if (is) enableDefaultCash();
+                            else disableDefaultCash();
+                        }
+                    },
+                    // 11 Label for the next widget
+                    {
+                        "type": "label",
+                        "width": 210,
+                        "height": 10,
+                        "x": 10,
+                        "y": 200,
+                        "text": "Default guest wealth"
+                    },
+                    // 12 Default cash amount
+                    {
+                        "name": "defaultcash.amount.spinner",
+                        "type": "spinner",
+                        "width": 210,
+                        "height": 15,
+                        "x": 10,
+                        "y": 215,
+                        "text": "$" + (defaultValue/10).toString(),
+                        "tooltip": "Set the amount of cash guests spawn with.",
+                        "onDecrement": function () {
+                            defaultValue -= 10;
+                            win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
+                        },
+                        "onIncrement": function () {
+                            defaultValue += 10;
+                            win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
+                        },
+                        "onClick": function () {
+                            ui.showTextInput(
+                                {
+                                    "title": "Set Default Guest Wealth",
+                                    "description": "Set the amount of cash guests spawn with. Please enter an integer.",
+                                    "initialValue": (defaultValue/10).toString(),
+                                    "callback": function (value) {
+                                        if (value) {
+                                            defaultValue = parseInt(value)*10;
+                                            win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
+                                        }
+                                    }
+                                }
+                            );
+                        }
                     }
                     // Debug Options Window
                     /*
