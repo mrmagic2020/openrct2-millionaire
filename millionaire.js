@@ -1,4 +1,4 @@
-/// <reference path="/Users/arnold.zhou/Documents/VSC/Javascript/OpecRCT/openrct2.d.ts"> />
+/// <reference path="../bin/openrct2.d.ts"> />
 
 // define window classifications for UI usage
 const win_class = {
