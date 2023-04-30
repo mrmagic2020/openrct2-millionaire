@@ -18,10 +18,11 @@ var addition = 500; // Amount of cash to be given each time
 
 var defaultCash; // DO NOT EDIT
 var changeDefault = false; // Default wealth switch
-var defaultValue = 1000; // Default guest wealth
+var defaultValue = park.guestInitialCash; // Default guest wealth
 
 
 if (replenish) enableAutoCashReplenish();
+if (changeDefault) enableDefaultCash();
 
 function main() {
     // post plugin setup msg
@@ -260,8 +261,15 @@ function main() {
                         "isDisabled": !enabled,
                         "onChange": function (is) {
                             changeDefault = is;
-                            if (is) enableDefaultCash();
-                            else disableDefaultCash();
+                            if (is) {
+                                enableDefaultCash();
+                                win.findWidget("defaultcash.amount.spinner").isDisabled = false;
+                            }
+                            else {
+                                disableDefaultCash();
+                                win.findWidget("defaultcash.amount.spinner").isDisabled = true;
+                                win.findWidget("defaultcash.amount.spinner").text = "$" + park.guestInitialCash/10;
+                            }
                         }
                     },
                     // 11 Label for the next widget
@@ -283,6 +291,7 @@ function main() {
                         "y": 215,
                         "text": "$" + (defaultValue/10).toString(),
                         "tooltip": "Set the amount of cash guests spawn with.",
+                        "isDisabled": !changeDefault,
                         "onDecrement": function () {
                             defaultValue -= 10;
                             win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
