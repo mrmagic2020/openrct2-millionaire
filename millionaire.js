@@ -424,8 +424,10 @@ registerPlugin(
     {
         "name": NAME,
         "version": VERS,
-        "authors": "mrmagic",
+        "authors": ["mrmagic"],
         "type": "remote",
+        "targetApiVersion": 68,
+        "minApiVersion": 34,
         "licence": "MIT",
         "main": main
     }
