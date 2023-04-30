@@ -5,21 +5,21 @@ const win_class = {
     main: "millionaire",
     debug: "Debug Options"
 }
+const vault = context.sharedStorage;
 
 /*---------------Configuration Panel---------------*/
-var enabled = true; // Main switch [true=on false=off]
+var enabled = vault.get('millionaire.enabled', true); // Main switch [true=on false=off]
 
 var autoCash; // DO NOT EDIT
-var replenish = true; // Auto cash replenish switch
-var notify = false; // Nofinication switch
-var simulate = false; // Simulate cash machine switch
-var threshold = 500; // Cash addition threshold [500=$50]
-var addition = 500; // Amount of cash to be given each time
+var replenish = vault.get('millionaire.replenish', false); // Auto cash replenish switch
+var notify = vault.get('millionaire.notify', false); // Nofinication switch
+var simulate = vault.get('millionaire.simulate', false); // Simulate cash machine switch
+var threshold = vault.get('millionaire.threshold', 500); // Cash addition threshold [500=$50]
+var addition = vault.get('millionaire.addition', 500); // Amount of cash to be given each time
 
 var defaultCash; // DO NOT EDIT
-var changeDefault = false; // Default wealth switch
-var defaultValue = park.guestInitialCash; // Default guest wealth
-
+var changeDefault = vault.get('millionaire.changeDefault', false); // Default wealth switch
+var defaultValue = vault.get('millionaire.defaultValue', park.guestInitialCash); // Default guest wealth
 
 if (replenish) enableAutoCashReplenish();
 if (changeDefault) enableDefaultCash();
@@ -57,7 +57,7 @@ function main() {
                         "isChecked": enabled,
                         "onChange": function (is) {
                             enabled = is;
-                            replenish = is;
+                            vault.set('millionaire.enabled', enabled);
                             if (is) {
                                 park.postMessage(
                                     {
@@ -75,6 +75,10 @@ function main() {
                                         text: "Millionaire disabled!"
                                     }
                                 );
+                                replenish = is;
+                                changeDefault = is;
+                                vault.set('millionaire.replenish', is);
+                                vault.set('millionaire.changeDefault', is);
                                 disableAutoCashReplenish();
                                 disableDefaultCash();
                                 win.title = NAME + " - Disabled";
@@ -106,6 +110,7 @@ function main() {
                         "isDisabled": !enabled,
                         "onChange": function (is) {
                             replenish = is;
+                            vault.set('millionaire.replenish', replenish);
                             if (is) enableAutoCashReplenish();
                             else disableAutoCashReplenish();
                         }
@@ -123,6 +128,7 @@ function main() {
                         "isChecked": notify,
                         "onChange": function (is) {
                             notify = is;
+                            vault.set('millionaire.notify', notify);
                         }
                     },
                     // 4 Label for the next widget
@@ -147,10 +153,12 @@ function main() {
                         "isDisabled": simulate,
                         "onDecrement": function () {
                             threshold -= 10;
+                            vault.set('millionaire.threshold', threshold);
                             win.findWidget("replenish.threshold.spinner").text = "$" + (threshold/10).toString();
                         },
                         "onIncrement": function () {
                             threshold += 10;
+                            vault.set('millionaire.threshold', threshold);
                             win.findWidget("replenish.threshold.spinner").text = "$" + (threshold/10).toString();
                         },
                         "onClick": function () {
@@ -162,6 +170,7 @@ function main() {
                                     "callback": function (value) {
                                         if (value) {
                                             threshold = parseInt(value)*10;
+                                            vault.set('millionaire.threshold', threshold);
                                             win.findWidget("replenish.threshold.spinner").text = "$" + (threshold/10).toString();
                                         }
                                     }
@@ -191,10 +200,12 @@ function main() {
                         "isDisabled": simulate,
                         "onDecrement": function () {
                             addition -= 10;
+                            vault.set('millionaire.addition', addition);
                             win.findWidget("replenish.amount.spinner").text = "$" + (addition/10).toString();
                         },
                         "onIncrement": function () {
                             addition += 10;
+                            vault.set('millionaire.addition', addition);
                             win.findWidget("replenish.amount.spinner").text = "$" + (addition/10).toString();
                         },
                         "onClick": function () {
@@ -206,6 +217,7 @@ function main() {
                                     "callback": function (value) {
                                         if (value) {
                                             addition = parseInt(value)*10;
+                                            vault.set('millionaire.addition', addition);
                                             win.findWidget("replenish.amount.spinner").text = "$" + (addition/10).toString();
                                         }
                                     }
@@ -226,14 +238,17 @@ function main() {
                         "isChecked": simulate,
                         "onChange": function (is) {
                             simulate = is;
+                            vault.set('millionaire.simulate', simulate);
                             win.findWidget("replenish.threshold.spinner").isDisabled = is;
                             win.findWidget("replenish.amount.spinner").isDisabled = is;
 
                             if (is) {
                                 threshold = 90;
+                                vault.set('millionaire.threshold', threshold);
                                 win.findWidget("replenish.threshold.spinner").text = "$9";
     
                                 addition = 500;
+                                vault.set('millionaire.addition', addition);
                                 win.findWidget("replenish.amount.spinner").text = "$50";
                             }
                         }
@@ -261,6 +276,7 @@ function main() {
                         "isDisabled": !enabled,
                         "onChange": function (is) {
                             changeDefault = is;
+                            vault.set('millionaire.changeDefault', changeDefault);
                             if (is) {
                                 enableDefaultCash();
                                 win.findWidget("defaultcash.amount.spinner").isDisabled = false;
@@ -294,10 +310,12 @@ function main() {
                         "isDisabled": !changeDefault,
                         "onDecrement": function () {
                             defaultValue -= 10;
+                            vault.set('millionaire.defaultValue', defaultValue);
                             win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
                         },
                         "onIncrement": function () {
                             defaultValue += 10;
+                            vault.set('millionaire.defaultValue', defaultValue);
                             win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
                         },
                         "onClick": function () {
@@ -309,6 +327,7 @@ function main() {
                                     "callback": function (value) {
                                         if (value) {
                                             defaultValue = parseInt(value)*10;
+                                            vault.set('millionaire.defaultValue', defaultValue);
                                             win.findWidget("defaultcash.amount.spinner").text = "$" + (defaultValue/10).toString();
                                         }
                                     }
