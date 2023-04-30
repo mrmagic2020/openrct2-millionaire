@@ -12,7 +12,7 @@
 - Enable/Disable individual functions;
 - More to be added!
 
-![In-game Configuration Panel](/Images/In-game%20Configuration%20Panel.png)
+![In-game Configuration Panel](/Assets/In-game%20Configuration%20Panel.png)
 
 ## Installation
 Download `millionaire.js` and drag it into `plugin` folder, where every other plugin would be. 
