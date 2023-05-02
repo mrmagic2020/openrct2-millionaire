@@ -1,15 +1,15 @@
 # **openrct2-millionaire**
 *An OpenRCT2 plugin capable of hacking into guests' wallets.*  
 
-![](https://img.shields.io/badge/type-remote-important?logo=applearcade&style=flat-square) ![](https://img.shields.io/badge/version-v1.2-informational?logo=visualstudiocode&style=flat-square) ![](https://img.shields.io/badge/license-MIT-informational?logo=microsoftword&style=flat-square)
+![](https://img.shields.io/badge/type-remote-important?logo=applearcade&style=flat-square) ![](https://img.shields.io/badge/language-Javascript-yellow?logo=javascript&style=flat-square) ![](https://img.shields.io/badge/version-v1.2-informational?logo=visualstudiocode&style=flat-square) ![](https://img.shields.io/badge/license-MIT-informational?logo=microsoftword&style=flat-square)
 
 ## Features
 
 - Auto refill guests' wallets every day.
-<br>
+
     - Customize the threshold and add amount.
     - Simulate cash machine option - only give cash to guests with < $9, ≥ 105 happiness and ≥ 70 energy. 
-<br>
+
 - Change the default amount of cash guests have.
 - Enable/Disable individual functions.
 - Separate configuration for different scenario saves.
