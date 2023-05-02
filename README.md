@@ -12,7 +12,7 @@
 - Enable/Disable individual functions;
 - More to be added!
 
-![In-game Configuration Panel](/Assets/In-game%20Configuration%20Panel.png)
+![In-game Configuration Panel](https://github.com/mrmagic2020/openrct2-millionaire/blob/v1.1/Assets/In-game%20Configuration%20Panel.png?raw=true)
 
 ## Installation
 Download `millionaire.js` and drag it into `plugin` folder, where every other plugin would be. 
