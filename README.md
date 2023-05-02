@@ -1,6 +1,8 @@
 # **openrct2-millionaire**
 *An OpenRCT2 plugin capable of hacking into guests' wallets.*  
 
+![](https://img.shields.io/badge/type-remote-important?logo=applearcade&style=flat-square) ![](https://img.shields.io/badge/version-v1.2-informational?logo=visualstudiocode&style=flat-square) ![](https://img.shields.io/badge/license-MIT-informational?logo=microsoftword&style=flat-square)
+
 ## Features
 
 - Auto refill guests' wallets every day.
@@ -17,6 +19,9 @@
 
 ## Installation
 Download `millionaire.js` and drag it into `plugin` folder, where every other plugin would be. 
+
+## Notes
+1. Plugin is not able to post park messages in servers due to an unsolved [issue #20051](https://github.com/OpenRCT2/OpenRCT2/issues/20051).
 
 ---
 
