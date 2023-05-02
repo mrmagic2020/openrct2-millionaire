@@ -426,7 +426,7 @@ registerPlugin(
         "version": VERS,
         "authors": ["mrmagic"],
         "type": "remote",
-        "targetApiVersion": 68,
+        "targetApiVersion": 70,
         "minApiVersion": 34,
         "licence": "MIT",
         "main": main
