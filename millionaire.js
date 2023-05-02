@@ -26,12 +26,7 @@ if (changeDefault) enableDefaultCash();
 
 function main() {
     // post plugin setup msg
-    park.postMessage(
-        {
-            "type": "award",
-            "text": "Millionaire has been loaded!"
-        }
-    );
+    park_postMessage("Millionaire has been loaded!", "award");
 
     // reg UI
     if (typeof ui !== "undefined") {
@@ -40,6 +35,7 @@ function main() {
             // define main window desc
             const win_desc = {
                 "classification": win_class.main,
+                "id": 0,
                 "title": NAME,
                 "width": 240,
                 "height": 300,
@@ -59,22 +55,12 @@ function main() {
                             enabled = is;
                             vault.set('millionaire.enabled', enabled);
                             if (is) {
-                                park.postMessage(
-                                    {
-                                        type: "money",
-                                        text: "Millionaire enabled!"
-                                    }
-                                );
+                                park_postMessage("Millionaire enabled!", "money");
                                 win.title = NAME + " - Enabled";
                                 win.findWidget("replenish.switch").isDisabled = false;
                                 win.findWidget("defaultcash.switch").isDisabled = false;
                             } else {
-                                park.postMessage(
-                                    {
-                                        type: "money",
-                                        text: "Millionaire disabled!"
-                                    }
-                                );
+                                park_postMessage("Millionaire disabled", "money");
                                 replenish = is;
                                 changeDefault = is;
                                 vault.set('millionaire.replenish', is);
@@ -366,6 +352,26 @@ function main() {
     // regAutoCash();
 }
 
+/**
+ * Alternative function while [issue #20051](https://github.com/OpenRCT2/OpenRCT2/issues/20051) is not solved. 
+ * Checks whether the network mode is multi-player or single-player, 
+ * so as to avoid calling `park.postMessage` function in servers. 
+ * @see https://github.com/OpenRCT2/OpenRCT2/issues/20051
+ * @param {string} msg 
+ * @param {ParkMessageType} msg_type
+ */
+function park_postMessage (msg, msg_type) {
+  if (network.mode === 'none') {
+    if (msg_type) park.postMessage(
+      {
+        type: msg_type,
+        text: msg
+      }
+    );
+    else park.postMessage(msg);
+  }
+}
+
 function enableAutoCashReplenish () {
     if (!autoCash) autoCash = context.subscribe("interval.day", addCash);
 }
@@ -391,12 +397,7 @@ function addCash() {
         };
     });
     if (notify) {
-        park.postMessage(
-            {
-                type: "money",
-                text: "[Millionaire] Money added!"
-            }
-        );
+        park_postMessage("[Millionaire] Money added!", "money");
     }
 }
 
@@ -419,7 +420,7 @@ function disableDefaultCash () {
 
 
 const NAME = "millionaire";
-const VERS = "1.0";
+const VERS = "1.2";
 registerPlugin(
     {
         "name": NAME,
