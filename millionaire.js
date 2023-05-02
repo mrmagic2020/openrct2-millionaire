@@ -5,7 +5,7 @@ const win_class = {
     main: "millionaire",
     debug: "Debug Options"
 }
-const vault = context.sharedStorage;
+const vault = context.getParkStorage(); // separate storage for each park file
 
 /*---------------Configuration Panel---------------*/
 var enabled = vault.get('millionaire.enabled', true); // Main switch [true=on false=off]
@@ -418,7 +418,7 @@ function disableDefaultCash () {
 
 
 
-const NAME = "Millionaire";
+const NAME = "millionaire";
 const VERS = "1.0";
 registerPlugin(
     {
